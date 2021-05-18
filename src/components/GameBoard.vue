@@ -1,12 +1,15 @@
 <template>
 	<v-container class="gameboard">
-		<table>
-			<tr class="mainrow" v-for="rIndex in 9" :key="rIndex">
-				<td class="maincol" v-for="cIndex in 9" :key="cIndex" :id="'row' + rIndex + 'col' + cIndex">
-					<input class="mainvalue" type="text" v-model="table[rIndex - 1][cIndex - 1]"/>
-				</td>
-			</tr>
-		</table>
+		<v-container>
+			<table>
+				<tr class="mainrow" v-for="rIndex in 9" :key="rIndex">
+					<td class="maincol" v-for="cIndex in 9" :key="cIndex" :id="'row' + rIndex + 'col' + cIndex">
+						<input v-if="table[rIndex - 1][cIndex - 1] != 0" class="mainvalue" type="text" v-model="table[rIndex - 1][cIndex - 1]" disabled/>
+						<input v-else class="mainvalue" type="text" />
+					</td>
+				</tr>
+			</table>
+		</v-container>
 	</v-container>
 </template>
 
@@ -27,6 +30,7 @@ table {
 	width: 20px;
 	font-size: xx-large;
 	color: grey;
+	text-align: center
 }
 td[id^="row3"], td[id^="row6"] {
 	border-bottom: 2px solid black;
@@ -59,29 +63,41 @@ export default {
 		}
 	},
 	created() {
+		this.initTable();
 	},
 	methods: {
 		initTable() {
 			let addedNumbers = 0;
 			for(let i = 0; i < 9; i ++) {
-				if((Math.floor(Math.random() * 9) + 1) == 9) {
-					do {
-						let number = Math.floor(Math.random() * 9) + 1;
-					}
-					while(this.isNumberAccepted(number, row, col))
+				for(let k = 0; k < 9; k ++) {
+					//if((Math.floor(Math.random() * 3) + 1) == 3) {
+						let number = 0;
+						do {
+							number = Math.floor(Math.random() * 9) + 1;
+							console.log(`tried number: ${number} on row :${i+1} col: ${k+1}`)
+						}
+						while(!this.isNumberAccepted(number, i, k));
+						this.table[i][k] = number;
+						console.log('success');
+						addedNumbers ++;
+						if(addedNumbers == 60) {
+							return;
+						}
+					//}
 				}
 			}
 		},
 		isNumberAccepted(num, row, col) {
-			let isAccepted;
-			if(this.isRowFree(num, row) && this.isColFree(num, col) && this.isBlockFree(num, row, col)) {
+			if(this.isBlockFree(num, row, col) && this.isRowFree(num, row) && this.isColFree(num, col)) {
 				return true;
 			}
 			return false;
 		},
 		isRowFree(num, row) {
-			if(this.table[row].includes(num)) {
-				return false;
+			for(let i = 0; i < 9; i ++) {
+				if(this.table[row][i] == num) {
+					return false;
+				}
 			}
 			return true;
 		},

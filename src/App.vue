@@ -1,19 +1,67 @@
 <template>
-  <v-container id="app">
-    <h1>Sudoku Project App</h1>
-    <br><hr><br>
-    <GameBoard />
-  </v-container>
+  <v-app>
+    <v-container id="app">
+      <h1>Sudoku Project App</h1>
+      <v-divider />
+      <v-spacer />
+      <v-container v-if="menuStatus == 0">
+        <v-btn x-large @click="menuStatus = 1">Új játék</v-btn>
+        <v-spacer />
+        <v-btn x-large >Folytatás</v-btn>
+      </v-container>
+      <v-container v-if="menuStatus == 1">
+        <v-btn x-large class="success" @click="setDifficulty(1)">Könnyű</v-btn>
+        <v-spacer />
+        <v-btn x-large class="info" @click="setDifficulty(2)">Közepes</v-btn>
+        <v-spacer />
+        <v-btn x-large class="error" @click="setDifficulty(3)">Nehéz</v-btn>
+      </v-container>
+      <GameBoard :difficulty="difficulty" v-if="menuStatus == 2" />
+    </v-container>
+  </v-app>
 </template>
+
+<style scoped>
+div[data-app='true'] {
+  background: no-repeat center center fixed !important;
+  background-size: cover;
+}
+.v-app {
+  background: rgba(0, 0, 0, 0);
+}
+#app {
+  background-color: rgba(234, 234, 250, 0.8);
+  border-radius: 20px 20px;
+}
+.v-btn {
+  margin: 20px;
+  width: 400px;
+  max-width: 400px;
+  height: 100px;
+  text-transform: none;
+}
+</style>
 
 <script>
 import GameBoard from "./components/GameBoard.vue";
 
 export default {
   name: "App",
-  components: {
-    GameBoard,
+  data() {
+    return {
+      menuStatus: 2,
+      difficulty: 0
+    }
   },
+  components: {
+    GameBoard
+  },
+  methods: {
+    setDifficulty(lvl) {
+      this.difficulty = lvl;
+      this.menuStatus = 2;
+    }
+  }
 };
 </script>
 
