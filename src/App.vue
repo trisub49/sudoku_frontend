@@ -1,24 +1,25 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <v-container id="app">
+    <h1>Sudoku Project App</h1>
+    <br><hr><br>
+    <GameBoard />
+  </v-container>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import GameBoard from "./components/GameBoard.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    GameBoard,
   },
 };
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
