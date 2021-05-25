@@ -70,57 +70,6 @@ export default {
 		this.initTable();
 	},
 	methods: {
-		getPossibleNumbers(row, col) {
-			let possibleNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-			for(let i = 0; i < 9; i ++) {
-				// sor ellenőrzés
-				if(possibleNumbers.indexOf(this.table[row][i]) !== -1 && i != col) {
-					possibleNumbers = possibleNumbers.filter(x => x !== this.table[row][i]);
-				}
-				// oszlop ellenőrzés
-				if(possibleNumbers.indexOf(this.table[i][col]) !== -1 && i != row) {
-					possibleNumbers = possibleNumbers.filter(x => x !== this.table[i][col]);
-				}
-			}
-			// blokk ellenőrzés
-			let fromBlock = this.getNumbersFromBlock(row, col);
-			fromBlock.forEach(number => {
-				if(possibleNumbers.indexOf(number) !== -1) {
-					possibleNumbers = possibleNumbers.filter(x => x !== number);
-				}
-			});
-			return possibleNumbers;
-		},
-		getNumbersFromBlock(row, col) {
-			let blockNumber = this.getBlockNumber(row, col);
-			let rowStart = 0;
-			let colStart = 0;
-			let rowEnd = 0;
-			let colEnd = 0;
-			let removableNumbers = [];
-
-			switch(blockNumber) {
-				case 1: { rowEnd = 3; colEnd = 3; break; }
-				case 2: { rowEnd = 3; colStart = 3; colEnd = 6; break; }
-				case 3: { rowEnd = 3; colStart = 6; colEnd = 9; break; }
-
-				case 4: { rowStart = 3; rowEnd = 6; colEnd = 3; break; }
-				case 5: { rowStart = 3; rowEnd = 6; colStart = 3; colEnd = 6; break; }
-				case 6: { rowStart = 3; rowEnd = 6; colStart = 6; colEnd = 9; break; }
-
-				case 7: { rowStart = 6; rowEnd = 9; colEnd = 3; break; }
-				case 8: { rowStart = 6; rowEnd = 9; colStart = 3; colEnd = 6; break; }
-				case 9: { rowStart = 6; rowEnd = 9; colStart = 6; colEnd = 9; break; }
-			}
-			for(let i = rowStart; i < rowEnd; i ++) {
-				for(let j = colStart; j < colEnd; j ++) {
-					if(!removableNumbers.includes(this.table[i][j])) {
-						removableNumbers.push(this.table[i][j]);
-					}
-				}
-			}
-			return removableNumbers;
-		},
 		initTable() {
 			let row = 0;
 			let col = 0;
@@ -158,27 +107,27 @@ export default {
 			let removedCounter = 0;
 			let row = 0;
 			let col = 0;
+			
 			while(row < 9) {
-				if(removedCounter == removableNumbers) break;
+				if(removedCounter == removableNumbers) { 
+					break;
+				}
 				while(col < 9) {
-					if(removedCounter == removableNumbers) break;
+					if(removedCounter == removableNumbers){
+						break;
+					} 
 					let random = Math.floor(Math.random() * (81 / removableNumbers));
 					if(random == 1 && removedCounter != removableNumbers && this.table[row][col] != '') {
 						this.table[row][col] = '';
 						removedCounter ++;
 					}
-					col++;
+					col ++;
 				}
 				col = 0;
-				row++;
+				row ++;
 				if(row == 9 && removedCounter != removableNumbers) {
 					row = 0;
 				}
-			}
-		},
-		resetRow(row) {
-			for(let col = 0; col < 9; col ++) {
-				this.table[row][col] = '';
 			}
 		},
 		initCellStyles() {
@@ -192,12 +141,64 @@ export default {
 				}
 			}
 		},
-		clearCell(row, col) {
-			let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
-			this.table[row][col] = '';
-			cell.value = '';
-			cell.style.color = 'black';
+		getPossibleNumbers(row, col) {
+			let possibleNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+			for(let i = 0; i < 9; i ++) {
+				// sor ellenőrzés
+				if(possibleNumbers.indexOf(this.table[row][i]) !== -1 && i != col) {
+					possibleNumbers = possibleNumbers.filter(x => x !== this.table[row][i]);
+				}
+				// oszlop ellenőrzés
+				if(possibleNumbers.indexOf(this.table[i][col]) !== -1 && i != row) {
+					possibleNumbers = possibleNumbers.filter(x => x !== this.table[i][col]);
+				}
+			}
+			// blokk ellenőrzés
+			let fromBlock = this.getNumbersFromBlock(row, col);
+			fromBlock.forEach(number => {
+				if(possibleNumbers.indexOf(number) !== -1) {
+					possibleNumbers = possibleNumbers.filter(x => x !== number);
+				}
+			});
+			return possibleNumbers;
 		},
+		getNumbersFromBlock(actualRow, actualCol) {
+			let blockNumber = this.getBlockNumber(actualRow, actualCol);
+			let rowStart = 0;
+			let colStart = 0;
+			let rowEnd = 0;
+			let colEnd = 0;
+			let removableNumbers = [];
+
+			switch(blockNumber) {
+				case 1: { rowEnd = 3; colEnd = 3; break; }
+				case 2: { rowEnd = 3; colStart = 3; colEnd = 6; break; }
+				case 3: { rowEnd = 3; colStart = 6; colEnd = 9; break; }
+
+				case 4: { rowStart = 3; rowEnd = 6; colEnd = 3; break; }
+				case 5: { rowStart = 3; rowEnd = 6; colStart = 3; colEnd = 6; break; }
+				case 6: { rowStart = 3; rowEnd = 6; colStart = 6; colEnd = 9; break; }
+
+				case 7: { rowStart = 6; rowEnd = 9; colEnd = 3; break; }
+				case 8: { rowStart = 6; rowEnd = 9; colStart = 3; colEnd = 6; break; }
+				case 9: { rowStart = 6; rowEnd = 9; colStart = 6; colEnd = 9; break; }
+			}
+
+			for(let row = rowStart; row < rowEnd; row ++) {
+				for(let col = colStart; col < colEnd; col ++) {
+					if(!removableNumbers.includes(this.table[row][col])) {
+						removableNumbers.push(this.table[row][col]);
+					}
+				}
+			}
+			return removableNumbers;
+		},
+		resetRow(row) {
+			for(let col = 0; col < 9; col ++) {
+				this.table[row][col] = '';
+			}
+		},
+		// játék indítás utáni metódusok
 		numberInspection(row, col) {
 			let num = this.table[row][col];
 			if(parseInt(num) > 0) {
@@ -220,8 +221,8 @@ export default {
 			return false;
 		},
 		isRowFree(num, row, actualCol) {
-			for(let col = 0; i < 9; i ++) {
-				if(this.table[row][col] == num && i != actualCol) {
+			for(let col = 0; col < 9; col ++) {
+				if(this.table[row][col] == num && col != actualCol) {
 					return false;
 				}
 			}
@@ -295,7 +296,13 @@ export default {
 					}
 				}
 			}
-		}
+		},
+		clearCell(row, col) {
+			let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
+			this.table[row][col] = '';
+			cell.value = '';
+			cell.style.color = 'black';
+		},
 	}
 }
 </script>
