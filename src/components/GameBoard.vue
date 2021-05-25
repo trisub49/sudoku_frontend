@@ -10,7 +10,6 @@
 					</td>
 				</tr>
 			</table>
-			<v-text-field @change="showNumbers()" v-model="numberChecked" />
 		</v-container>
 	</v-container>
 </template>
@@ -107,7 +106,7 @@ export default {
 			let removedCounter = 0;
 			let row = 0;
 			let col = 0;
-			
+
 			while(row < 9) {
 				if(removedCounter == removableNumbers) { 
 					break;
@@ -284,18 +283,6 @@ export default {
 				}
 			}
 			return false;
-		},
-		showNumbers() {
-			for(let row = 0; row < 9; row ++) {
-				for(let col = 0; col < 9; col ++) {
-					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
-					if(this.table[row][col] == this.numberChecked) {
-						cell.style.color = 'red';
-					} else {
-						cell.style.color = 'black';
-					}
-				}
-			}
 		},
 		clearCell(row, col) {
 			let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
