@@ -154,37 +154,47 @@ export default {
 			setTimeout(() => this.initCellStyles(), 1);
 		},
 		removeNumbers(difficulty) {
-			let removableNumbers = 17 + (difficulty * 3);
+			let removableNumbers = 81 - 36 + (difficulty * 3);
 			let removedCounter = 0;
-			for(let row = 0; row < 9; row ++) {
-				for(let col = 0; col < 9; col ++) {
+			let row = 0;
+			let col = 0;
+			while(row < 9) {
+				if(removedCounter == removableNumbers) break;
+				while(col < 9) {
+					if(removedCounter == removableNumbers) break;
 					let random = Math.floor(Math.random() * (81 / removableNumbers));
-					if(random == 1 && removedCounter != removableNumbers) {
+					if(random == 1 && removedCounter != removableNumbers && this.table[row][col] != '') {
 						this.table[row][col] = '';
-						removableNumbers ++;
+						removedCounter ++;
 					}
+					col++;
+				}
+				col = 0;
+				row++;
+				if(row == 9 && removedCounter != removableNumbers) {
+					row = 0;
 				}
 			}
 		},
 		resetRow(row) {
-			for(let i = 0; i < 9; i ++) {
-				this.table[row][i] = '';
+			for(let col = 0; col < 9; col ++) {
+				this.table[row][col] = '';
 			}
 		},
 		initCellStyles() {
-			for(let i = 0; i < 9; i ++) {
-				for(let k = 0; k < 9; k ++) {
-					let number = parseInt(this.table[i][k])
+			for(let row = 0; row < 9; row ++) {
+				for(let col = 0; col < 9; col ++) {
+					let number = parseInt(this.table[row][col])
 					if(number > 0) {
-						let cell = document.getElementById(`input_row${i+1}col${k+1}`);
+						let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
 						cell.disabled = true;
 					}				
 				}
 			}
 		},
 		clearCell(row, col) {
+			let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
 			this.table[row][col] = '';
-			let cell = document.getElementById(`input_row${row+1}col${col+1}`);
 			cell.value = '';
 			cell.style.color = 'black';
 		},
@@ -209,17 +219,17 @@ export default {
 			}
 			return false;
 		},
-		isRowFree(num, row, col) {
-			for(let i = 0; i < 9; i ++) {
-				if(this.table[row][i] == num && i != col) {
+		isRowFree(num, row, actualCol) {
+			for(let col = 0; i < 9; i ++) {
+				if(this.table[row][col] == num && i != actualCol) {
 					return false;
 				}
 			}
 			return true;
 		},
-		isColFree(num, row, col) {
-			for(let i = 0; i < 9; i ++) {
-				if(this.table[i][col] == num && i != row) {
+		isColFree(num, actualRow, actualCol) {
+			for(let row = 0; row < 9; row ++) {
+				if(this.table[row][actualCol] == num && row != actualRow) {
 					return false;
 				}
 			}
@@ -246,8 +256,8 @@ export default {
 				if(col >= 6) return 9;
 			}
 		},
-		isNumberInBlock(number, row, col) {
-			let blockNumber = this.getBlockNumber(row, col);
+		isNumberInBlock(number, actualRow, actualCol) {
+			let blockNumber = this.getBlockNumber(actualRow, actualCol);
 			let rowStart = 0;
 			let colStart = 0;
 			let rowEnd = 0;
@@ -265,9 +275,9 @@ export default {
 				case 8: { rowStart = 6; rowEnd = 9; colStart = 3; colEnd = 6; break; }
 				case 9: { rowStart = 6; rowEnd = 9; colStart = 6; colEnd = 9; break; }
 			}
-			for(let i = rowStart; i < rowEnd; i ++) {
-				for(let j = colStart; j < colEnd; j ++) {
-					if(this.table[i][j] == number && i != row && j != col) {
+			for(let row = rowStart; row < rowEnd; row ++) {
+				for(let col = colStart; col < colEnd; col ++) {
+					if(this.table[row][col] == number && row != actualRow && col != actualCol) {
 						return true;
 					}
 				}
@@ -275,10 +285,10 @@ export default {
 			return false;
 		},
 		showNumbers() {
-			for(let i = 0; i < 9; i ++) {
-				for(let j = 0; j < 9; j ++) {
-					let cell = document.getElementById(`input_row${i+1}col${j+1}`);
-					if(this.table[i][j] == this.numberChecked) {
+			for(let row = 0; row < 9; row ++) {
+				for(let col = 0; col < 9; col ++) {
+					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
+					if(this.table[row][col] == this.numberChecked) {
 						cell.style.color = 'red';
 					} else {
 						cell.style.color = 'black';
