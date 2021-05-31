@@ -5,8 +5,9 @@
 				<tr class="mainrow" v-for="rIndex in 9" :key="rIndex">
 					<td class="maincol" v-for="cIndex in 9" :key="cIndex" :id="'row' + rIndex + 'col' + cIndex">
 						<input 
-						class="mainvalue" 
-					 	@click="clearCell(rIndex-1, cIndex-1)" @change="numberInspection(rIndex-1, cIndex-1)" v-model="table[rIndex - 1][cIndex - 1]" :id="'input_row' + rIndex + 'col' + cIndex"/>
+							class="mainvalue" 
+							@click="clearCell(rIndex-1, cIndex-1)" @change="numberInspection(rIndex-1, cIndex-1)" v-model="table[rIndex - 1][cIndex - 1]" :id="'input_row' + rIndex + 'col' + cIndex"
+						/>
 					</td>
 				</tr>
 			</table>
@@ -49,6 +50,7 @@ td[id$="col3"], td[id$="col6"] {
 <script>
 export default {
 	props: ['difficulty'],
+
 	data() {
 		return {
 			numberChecked: 0,
@@ -65,9 +67,11 @@ export default {
 			]
 		}
 	},
+
 	created() {
 		this.initTable();
 	},
+
 	methods: {
 		initTable() {
 			let row = 0;

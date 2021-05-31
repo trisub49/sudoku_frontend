@@ -47,15 +47,18 @@ import GameBoard from "./components/GameBoard.vue";
 
 export default {
   name: "App",
+
   data() {
     return {
-      menuStatus: 2,
+      menuStatus: 0,
       difficulty: 0
     }
   },
+
   components: {
     GameBoard
   },
+  
   methods: {
     setDifficulty(lvl) {
       this.difficulty = lvl;
