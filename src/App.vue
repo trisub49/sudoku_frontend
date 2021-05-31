@@ -17,6 +17,7 @@
         <v-btn x-large class="error" @click="setDifficulty(3)">Nehéz</v-btn>
       </v-container>
       <GameBoard :difficulty="difficulty" v-if="menuStatus == 2" />
+      <GameInfo />
     </v-container>
   </v-app>
 </template>
@@ -44,6 +45,7 @@ div[data-app='true'] {
 
 <script>
 import GameBoard from "./components/GameBoard.vue";
+import GameInfo from "./components/GameInfo.vue";
 
 export default {
   name: "App",
@@ -56,7 +58,8 @@ export default {
   },
 
   components: {
-    GameBoard
+    GameBoard,
+    GameInfo
   },
   
   methods: {
