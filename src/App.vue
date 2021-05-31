@@ -16,8 +16,16 @@
         <v-spacer />
         <v-btn x-large class="error" @click="setDifficulty(3)">Nehéz</v-btn>
       </v-container>
-      <GameBoard :difficulty="difficulty" v-if="menuStatus == 2" />
-      <GameInfo />
+      <v-container id="game" v-if="menuStatus == 2">
+        <v-container class="d-none d-md-block">
+          <v-container id="board"><GameBoard :difficulty="difficulty" /></v-container>
+          <v-container id="info"><GameInfo /></v-container>
+        </v-container>
+        <v-container class="d-block d-md-none">
+          <v-container id="info_mobile"><GameInfo /></v-container>
+           <v-container id="board_mobile"><GameBoard :difficulty="difficulty" /></v-container>
+        </v-container> 
+      </v-container>
     </v-container>
   </v-app>
 </template>
@@ -29,10 +37,7 @@ div[data-app='true'] {
 }
 .v-app {
   background: rgba(0, 0, 0, 0);
-}
-#app {
-  background-color: rgba(234, 234, 250, 0.8);
-  border-radius: 20px 20px;
+  width: 100%;
 }
 .v-btn {
   margin: 20px;
@@ -40,6 +45,29 @@ div[data-app='true'] {
   max-width: 400px;
   height: 100px;
   text-transform: none;
+}
+#app {
+  background-color: rgba(234, 234, 250, 0.8);
+  border-radius: 20px 20px;
+}
+#game {
+  width: 100%;
+}
+#board {
+  width: 480px;
+  height: 480px;
+  float: left;
+}
+#board_mobile {
+  width: 380px;
+  height: 380px;
+}
+#info {
+  width: auto;
+  float: left;
+}
+#info_mobile {
+  width: 100%;
 }
 </style>
 
@@ -68,7 +96,7 @@ export default {
       this.menuStatus = 2;
     }
   }
-};
+}
 </script>
 
 <style>
