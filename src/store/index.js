@@ -5,9 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    counter,
-    failCounter,
-    filledFields
+    counter: 0,
+    failCounter: 0,
+    filledFields: 81
   },
   mutations: {},
   actions: {},

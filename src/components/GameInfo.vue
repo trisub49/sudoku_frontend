@@ -1,17 +1,9 @@
 <template>
 	<v-container class="gameinfo">
-		<v-container class="d-none d-md-block">
-			<p>Eltelt idő: <span class="values">{{countString()}}</span></p>
-			<p>Hibapont: <span class="values">{{failedTries()}}</span></p>
-			<p>Kitöltött mezők száma: <span class="values">{{filledFields()}}</span></p>
-		</v-container>
-		<v-container class="d-block d-md-none">
-			<p id="counter"><span class="values">{{countString()}}</span></p>
-			<p>
-				Hibapont: <span class="values">{{failedTries()}}</span>
-				Kitöltött mezők száma: <span class="values">{{filledFields()}}</span>
-			</p>
-		</v-container>
+		<p>Eltelt idő: <span class="values">{{countString}}</span></p>
+			<p>Hibapont: <span class="values">{{failedTries}}</span></p>
+			<p>Kitöltött mezők száma: <span class="values">{{filledFields}}</span>
+		</p>
 	</v-container>
 </template>
 
@@ -35,7 +27,7 @@
 <script>
 export default {
 
-	methods: {
+	computed: {
 		countString() {
 			let seconds = this.$store.state.counter;
 			return seconds;
@@ -49,6 +41,5 @@ export default {
 			return this.$store.state.filledFields;
 		}
 	}
-	
 }
 </script>

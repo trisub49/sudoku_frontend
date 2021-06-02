@@ -5,8 +5,8 @@
 				<td class="maincol" v-for="cIndex in 9" :key="cIndex" :id="'row' + rIndex + 'col' + cIndex">
 					<input 
 						class="mainvalue" 
-						@click="clearCell(rIndex-1, cIndex-1)" 
-						@change="numberInspection(rIndex-1, cIndex-1)" 
+						@click="clearCell(rIndex - 1, cIndex - 1)" 
+						@change="numberInspection(rIndex - 1, cIndex - 1)" 
 						v-model="table[rIndex - 1][cIndex - 1]" 
 						:id="'input_row' + rIndex + 'col' + cIndex"
 					/>
@@ -23,6 +23,7 @@ table {
 	border-collapse: collapse;
 	border: 2px solid black;
 	background-color: rgb(234, 234, 250);
+	padding-bottom: 20px;
 }
 .maincol {
 	border: 0.25px solid grey;
@@ -79,6 +80,10 @@ export default {
 			let col = 0;
 			var preLoad = performance.now();
 
+			this.$store.state.filledFields = 81;
+			this.$store.state.failCounter = 0;
+			this.$store.state.counter = 0;
+
 			while(row < 9) {
 				let rowFailCounter = 0;
 				while(col < 9 && rowFailCounter < 5) {
@@ -101,35 +106,26 @@ export default {
 				col = 0;
 				row ++;
 			}
+			this.removeNumbers(62 + this.difficulty * 2);
 			console.log(`A véletlenszerű tábla betöltés ${(performance.now() - preLoad) / 100} másodpercet vett igénybe.`);
-
-			this.removeNumbers(this.difficulty);
-			setTimeout(() => this.initCellStyles(), 1);
 		},
-		removeNumbers(difficulty) {
-			let removableNumbers = 81 - 36 + (difficulty * 3);
+		removeNumbers(number) {
 			let removedCounter = 0;
 			let row = 0;
-			let col = 0;
 
 			while(row < 9) {
-				if(removedCounter == removableNumbers) { 
-					break;
-				}
-				while(col < 9) {
-					if(removedCounter == removableNumbers){
-						break;
-					} 
-					let random = Math.floor(Math.random() * (81 / removableNumbers));
-					if(random == 1 && removedCounter != removableNumbers && this.table[row][col] != '') {
-						this.table[row][col] = '';
-						removedCounter ++;
+				for(let col = 0; col < 9; col ++) {
+					if(this.table[row][col] != '' && removedCounter < number) {
+						let random = Math.floor(10 * Math.random(2));
+						if(random == 1) {
+							this.table[row][col] = '';
+							removedCounter ++;
+							this.$store.state.filledFields --;
+						}
 					}
-					col ++;
 				}
-				col = 0;
 				row ++;
-				if(row == 9 && removedCounter != removableNumbers) {
+				if(row == 9 && removedCounter < number) {
 					row = 0;
 				}
 			}
@@ -137,11 +133,10 @@ export default {
 		initCellStyles() {
 			for(let row = 0; row < 9; row ++) {
 				for(let col = 0; col < 9; col ++) {
-					let number = parseInt(this.table[row][col])
-					if(number > 0) {
-						let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
+					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
+					if(this.table[row][col] != '') {
 						cell.disabled = true;
-					}				
+					}
 				}
 			}
 		},
@@ -209,9 +204,10 @@ export default {
 				if(parseInt(num) > 9) {
 					this.clearCell(row, col);
 				} else {
-					let cell = document.getElementById(`input_row${row+1}col${col+1}`);
+					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
 					if(!this.isNumberAccepted(num, row, col)) {
 						cell.style.color = 'red';
+						this.$store.state.failCounter ++;
 					} else {
 						cell.style.color = 'blue';
 					}

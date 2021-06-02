@@ -17,14 +17,8 @@
         <v-btn x-large class="error" @click="setDifficulty(3)">Nehéz</v-btn>
       </v-container>
       <v-container id="game" v-if="menuStatus == 2">
-        <v-container class="d-none d-md-block">
-          <v-container id="board"><GameBoard :difficulty="difficulty" /></v-container>
-          <v-container id="info"><GameInfo /></v-container>
-        </v-container>
-        <v-container class="d-block d-md-none">
-          <v-container id="info_mobile"><GameInfo /></v-container>
-           <v-container id="board_mobile"><GameBoard :difficulty="difficulty" /></v-container>
-        </v-container> 
+        <v-container id="board"><GameBoard :difficulty="difficulty" /></v-container>
+        <v-container id="info"><GameInfo /></v-container>
       </v-container>
     </v-container>
   </v-app>
@@ -52,22 +46,16 @@ div[data-app='true'] {
 }
 #game {
   width: 100%;
+  height: auto;
 }
 #board {
   width: 480px;
   height: 480px;
   float: left;
 }
-#board_mobile {
-  width: 380px;
-  height: 380px;
-}
 #info {
   width: auto;
   float: left;
-}
-#info_mobile {
-  width: 100%;
 }
 </style>
 
@@ -94,6 +82,12 @@ export default {
     setDifficulty(lvl) {
       this.difficulty = lvl;
       this.menuStatus = 2;
+      this.countTime();
+    },
+    
+    countTime() {
+      setTimeout(this.countTime, 1000);
+      this.$store.state.counter ++;
     }
   }
 }
