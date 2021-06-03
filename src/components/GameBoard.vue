@@ -18,12 +18,13 @@
 
 <style scoped>
 table {
-	width: 100%;
-  height: 480px;
+	width: 400px;
+	height: 400px;
+	margin-left: auto;
+	margin-right: auto;
 	border-collapse: collapse;
 	border: 2px solid black;
 	background-color: rgb(234, 234, 250);
-	padding-bottom: 20px;
 }
 .maincol {
 	border: 0.25px solid grey;
@@ -86,8 +87,10 @@ export default {
 
 			while(row < 9) {
 				let rowFailCounter = 0;
+
 				while(col < 9 && rowFailCounter < 5) {
 					let possibleNumbers = this.getPossibleNumbers(row, col);
+					
 					if(possibleNumbers.length == 0) {
 						this.resetRow(row);
 						col = 0;
@@ -107,6 +110,7 @@ export default {
 				row ++;
 			}
 			this.removeNumbers(62 + this.difficulty * 2);
+			setTimeout(() => this.initCellStyles(), 1);
 			console.log(`A véletlenszerű tábla betöltés ${(performance.now() - preLoad) / 100} másodpercet vett igénybe.`);
 		},
 		removeNumbers(number) {
@@ -115,13 +119,10 @@ export default {
 
 			while(row < 9) {
 				for(let col = 0; col < 9; col ++) {
-					if(this.table[row][col] != '' && removedCounter < number) {
-						let random = Math.floor(10 * Math.random(2));
-						if(random == 1) {
-							this.table[row][col] = '';
-							removedCounter ++;
-							this.$store.state.filledFields --;
-						}
+					if(this.table[row][col] != '' && removedCounter < number && Math.floor(10 * Math.random(2)) == 1) {
+						this.table[row][col] = '';
+						removedCounter ++;
+						this.$store.state.filledFields --;
 					}
 				}
 				row ++;
@@ -134,6 +135,7 @@ export default {
 			for(let row = 0; row < 9; row ++) {
 				for(let col = 0; col < 9; col ++) {
 					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
+
 					if(this.table[row][col] != '') {
 						cell.disabled = true;
 					}
@@ -142,6 +144,7 @@ export default {
 		},
 		getPossibleNumbers(row, col) {
 			let possibleNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 			for(let i = 0; i < 9; i ++) {
 				// sor ellenőrzés
 				if(possibleNumbers.indexOf(this.table[row][i]) !== -1 && i != col) {
@@ -154,6 +157,7 @@ export default {
 			}
 			// blokk ellenőrzés
 			let fromBlock = this.getNumbersFromBlock(row, col);
+
 			fromBlock.forEach(number => {
 				if(possibleNumbers.indexOf(number) !== -1) {
 					possibleNumbers = possibleNumbers.filter(x => x !== number);
@@ -200,16 +204,20 @@ export default {
 		// játék indítás utáni metódusok
 		numberInspection(row, col) {
 			let num = this.table[row][col];
+
 			if(parseInt(num) > 0) {
 				if(parseInt(num) > 9) {
 					this.clearCell(row, col);
 				} else {
 					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
+
 					if(!this.isNumberAccepted(num, row, col)) {
 						cell.style.color = 'red';
 						this.$store.state.failCounter ++;
+						this.$store.state.filledFields ++;
 					} else {
 						cell.style.color = 'blue';
+						this.$store.state.filledFields ++;
 					}
 				}
 			}
@@ -263,6 +271,7 @@ export default {
 			let colStart = 0;
 			let rowEnd = 0;
 			let colEnd = 0;
+
 			switch(blockNumber) {
 				case 1: { rowEnd = 3; colEnd = 3; break; }
 				case 2: { rowEnd = 3; colStart = 3; colEnd = 6; break; }
@@ -287,10 +296,14 @@ export default {
 		},
 		clearCell(row, col) {
 			let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
+
+			if(this.table[row][col] != '') {
+				this.$store.state.filledFields --;
+			}
 			this.table[row][col] = '';
 			cell.value = '';
 			cell.style.color = 'black';
-		},
+		}
 	}
 }
 </script>

@@ -16,46 +16,39 @@
         <v-spacer />
         <v-btn x-large class="error" @click="setDifficulty(3)">Nehéz</v-btn>
       </v-container>
-      <v-container id="game" v-if="menuStatus == 2">
-        <v-container id="board"><GameBoard :difficulty="difficulty" /></v-container>
-        <v-container id="info"><GameInfo /></v-container>
+      <v-container v-if="menuStatus == 2">
+        <v-container class="float-left col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3"><GameInfo /></v-container>
+        <v-container class="float-left col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9"><GameBoard :difficulty="difficulty" /></v-container>
       </v-container>
     </v-container>
   </v-app>
 </template>
 
-<style scoped>
+<style>
 div[data-app='true'] {
   background: no-repeat center center fixed !important;
   background-size: cover;
 }
 .v-app {
   background: rgba(0, 0, 0, 0);
-  width: 100%;
 }
 .v-btn {
   margin: 20px;
-  width: 400px;
+  width: 65%;
   max-width: 400px;
   height: 100px;
   text-transform: none;
 }
 #app {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 40px;
   background-color: rgba(234, 234, 250, 0.8);
   border-radius: 20px 20px;
-}
-#game {
-  width: 100%;
-  height: auto;
-}
-#board {
-  width: 480px;
-  height: 480px;
-  float: left;
-}
-#info {
-  width: auto;
-  float: left;
+  text-align: center;
 }
 </style>
 
@@ -93,13 +86,3 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
