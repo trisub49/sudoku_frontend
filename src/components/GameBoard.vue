@@ -18,8 +18,8 @@
 
 <style scoped>
 table {
-	width: 400px;
-	height: 400px;
+	width: 380px;
+	height: 380px;
 	margin-left: auto;
 	margin-right: auto;
 	border-collapse: collapse;
@@ -90,7 +90,7 @@ export default {
 
 				while(col < 9 && rowFailCounter < 5) {
 					let possibleNumbers = this.getPossibleNumbers(row, col);
-					
+
 					if(possibleNumbers.length == 0) {
 						this.resetRow(row);
 						col = 0;
@@ -109,8 +109,9 @@ export default {
 				col = 0;
 				row ++;
 			}
-			this.removeNumbers(62 + this.difficulty * 2);
+			this.removeNumbers(58 + this.difficulty * 2);
 			setTimeout(() => this.initCellStyles(), 1);
+			this.countTime();
 			console.log(`A véletlenszerű tábla betöltés ${(performance.now() - preLoad) / 100} másodpercet vett igénybe.`);
 		},
 		removeNumbers(number) {
@@ -218,6 +219,9 @@ export default {
 					} else {
 						cell.style.color = 'blue';
 						this.$store.state.filledFields ++;
+						if(this.$store.state.filledFields == 81) {
+							this.finishGame();
+						}
 					}
 				}
 			}
@@ -303,6 +307,15 @@ export default {
 			this.table[row][col] = '';
 			cell.value = '';
 			cell.style.color = 'black';
+		},
+    countTime() {
+			if(this.$store.state.filledFields < 81) {
+				setTimeout(this.countTime, 1000);
+				this.$store.state.counter ++;
+			}
+    },
+		finishGame() {
+			console.log('a tábla ki lett tölve');
 		}
 	}
 }

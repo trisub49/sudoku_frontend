@@ -7,7 +7,7 @@
       <v-container v-if="menuStatus == 0">
         <v-btn x-large @click="menuStatus = 1">Új játék</v-btn>
         <v-spacer />
-        <v-btn x-large >Folytatás</v-btn>
+        <v-btn v-if="isGameStateInStorage()" x-large>Folytatás</v-btn>
       </v-container>
       <v-container v-if="menuStatus == 1">
         <v-btn x-large class="success" @click="setDifficulty(1)">Könnyű</v-btn>
@@ -75,12 +75,12 @@ export default {
     setDifficulty(lvl) {
       this.difficulty = lvl;
       this.menuStatus = 2;
-      this.countTime();
     },
-    
-    countTime() {
-      setTimeout(this.countTime, 1000);
-      this.$store.state.counter ++;
+    isGameStateInStorage() {
+      if(localStorage.getItem('table') != null && localStorage.getItem('table') != 'null') {
+        return true;
+      }
+      return false;
     }
   }
 }

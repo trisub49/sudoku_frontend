@@ -1,14 +1,25 @@
 <template>
 	<v-container class="gameinfo">
 		<v-container class="d-none d-sm-none d-md-block d-lg-block d-xl-block text-left">
-			<p>Eltelt idő: <span class="values">{{countString}}</span> mp</p>
-			<p>Hibapont: <span class="values">({{failedTries}})</span></p>
-			<p>Kitöltött mezők: <span class="values">({{filledFields}}/81)</span></p>
+			<table>
+				<tr><td class="titles">Eltelt idő:</td><td class="values">{{countString}}</td></tr>
+				<tr><td class="titles">Hibapont:</td><td class="values">{{failedTries}}</td></tr>
+				<tr><td class="titles">Kitöltött mezők:</td><td class="values">{{filledFields}}/81</td></tr>
+			</table>
 		</v-container>
 		<v-container class="d-block d-sm-block d-md-none justify-center">
-			<p><span class="values" id="counter">{{countString}}</span></p>
-			<p>Hibapont: <span class="values">({{failedTries}})</span> -
-			Kitöltött mezők: <span class="values">({{filledFields}}/81)</span></p>
+			<table>
+				<tr>
+					<td class="text-xs-center cellsize"><v-icon>mdi-alert-circle-outline</v-icon></td>
+					<td class="text-xs-center cellsize"><v-icon>mdi-av-timer</v-icon></td>
+					<td class="text-xs-center cellsize"><v-icon>mdi-check</v-icon></td>
+				</tr>
+				<tr>
+					<td class="text-xs-center cellsize">{{failedTries}}</td>
+					<td class="text-xs-center cellsize">{{countString}}</td>
+					<td class="text-xs-center cellsize">{{filledFields}}/81</td>
+				</tr>
+			</table>
 		</v-container>
 	</v-container>
 </template>
@@ -17,15 +28,24 @@
 
 .gameinfo {
 	font-weight: normal;
+	background-color: white;
+	border: 0.25px solid grey;
+	border-radius: 5px 5px;
+}
+table {
+	width: 100%;
+}
+.cellsize {
+	width: 33.333%;
 }
 .values {
-	color: blue;
+	color: rgb(51,102,187);
+	text-align: right;
 }
-#counter {
-	text-align: center;
-	font-size: large;
-	font-weight: bold;
+.v-btn {
+	margin-bottom: 0px;
 }
+
 p {
 	line-height: 100%;
 }
