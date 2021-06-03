@@ -17,6 +17,10 @@
 </template>
 
 <style scoped>
+.gameboard {
+	padding-top: 0px;
+	margin-top: 0px;
+}
 table {
 	width: 380px;
 	height: 380px;
@@ -35,6 +39,7 @@ table {
 	border: none;
 	width: 20px;
 	font-size: xx-large;
+	font-weight: bold;
 	color: black;
 	text-align: center
 }
