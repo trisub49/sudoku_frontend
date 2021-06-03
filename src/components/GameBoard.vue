@@ -1,6 +1,6 @@
 <template>
 	<v-container class="gameboard">
-		<table>
+		<table id="sudokutable">
 			<tr class="mainrow" v-for="rIndex in 9" :key="rIndex">
 				<td class="maincol" v-for="cIndex in 9" :key="cIndex" :id="'row' + rIndex + 'col' + cIndex">
 					<input 
@@ -89,6 +89,7 @@ export default {
 			this.$store.state.filledFields = 81;
 			this.$store.state.failCounter = 0;
 			this.$store.state.counter = 0;
+			this.$store.state.gamePaused = false;
 
 			while(row < 9) {
 				let rowFailCounter = 0;
@@ -218,10 +219,12 @@ export default {
 					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
 
 					if(!this.isNumberAccepted(num, row, col)) {
+						console.log('hiba');
 						cell.style.color = 'red';
 						this.$store.state.failCounter ++;
 						this.$store.state.filledFields ++;
 					} else {
+						console.log('rendben');
 						cell.style.color = 'blue';
 						this.$store.state.filledFields ++;
 						if(this.$store.state.filledFields == 81) {
@@ -314,8 +317,8 @@ export default {
 			cell.style.color = 'black';
 		},
     countTime() {
-			if(this.$store.state.filledFields < 81) {
-				setTimeout(this.countTime, 1000);
+			setTimeout(this.countTime, 1000);
+			if(this.$store.state.filledFields < 81 && this.$store.state.gamePaused == false) {
 				this.$store.state.counter ++;
 			}
     },

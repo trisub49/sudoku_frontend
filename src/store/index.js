@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     counter: 0,
     failCounter: 0,
-    filledFields: 81
+    filledFields: 81,
+    gamePaused: false
   },
   mutations: {},
   actions: {},

@@ -23,7 +23,9 @@
 				</table>
 			</v-container>
 		</v-container>
-    <v-btn icon elevation="20" color="black"><v-icon>mdi-pause</v-icon></v-btn>
+    <v-btn v-if="$store.state.gamePaused == false" icon elevation="20" color="black" @click="pauseGame()"><v-icon>mdi-pause</v-icon></v-btn>
+		<v-btn v-if="$store.state.gamePaused == true" icon elevation="20" color="black" @click="pauseGame()"><v-icon>mdi-play</v-icon></v-btn>
+		<v-btn icon elevation="20" color="black"><v-icon>mdi-refresh</v-icon></v-btn>
 	</v-container>
 </template>
 
@@ -72,6 +74,20 @@ export default {
 
 		filledFields() {
 			return this.$store.state.filledFields;
+		}
+	},
+
+	methods: {
+		pauseGame() {
+			if(this.$store.state.gamePaused == false) {
+				let table = document.getElementById("sudokutable");
+				table.style.visibility = "hidden";
+				this.$store.state.gamePaused = true;
+			} else {
+				let table = document.getElementById("sudokutable");
+				table.style.visibility = "visible";
+				this.$store.state.gamePaused = false;
+			}
 		}
 	}
 }
