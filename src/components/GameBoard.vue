@@ -76,16 +76,7 @@ td[id$="col3"], td[id$="col6"] {
 export default {
 
 	methods: {
-		initCellStyles() {
-			for(let row = 0; row < 9; row ++) {
-				for(let col = 0; col < 9; col ++) {
-					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
-					if(this.$store.state.table[row][col] != '') {
-						cell.disabled = true;
-					}
-				}
-			}
-		},
+		
 		getPossibleNumbers(row, col) {
 			let possibleNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -156,12 +147,10 @@ export default {
 					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
 
 					if(!this.isNumberAccepted(num, row, col)) {
-						console.log('hiba');
 						cell.style.color = 'red';
 						this.$store.state.failCounter ++;
 						this.$store.state.filledFields ++;
 					} else {
-						console.log('rendben');
 						cell.style.color = 'blue';
 						this.$store.state.filledFields ++;
 						if(this.$store.state.filledFields == 81) {

@@ -8,7 +8,7 @@
 					<tr><td class="titles">Kitöltött mezők:</td><td class="values">{{filledFields}}/81</td></tr>
 				</table>
 			</v-container>
-			<v-container class="d-inline-block d-sm-inline-block d-md-none justify-center py-0 my-0">
+			<v-container class="d-inline-block d-sm-inline-block d-md-none justify-center py-0 my-0 px-auto mx-auto">
 				<table>
 					<tr>
 						<td class="text-xs-center cellsize"><v-icon>mdi-alert-circle-outline</v-icon></td>
@@ -102,11 +102,25 @@ export default {
 				let table = document.getElementById("sudokutable");
 				table.style.visibility = "hidden";
 				this.$store.state.gamePaused = true;
+				this.saveGame();
 			} else {
 				let table = document.getElementById("sudokutable");
 				table.style.visibility = "visible";
 				this.$store.state.gamePaused = false;
+				localStorage.setItem('tableState', '');
 			}
+		},
+		saveGame() {
+			let stringOfTableState = '';
+			for(let row = 0; row < 9; row ++) {
+				for(let col = 0; col < 9; col ++) {
+					let cellState = document.getElementById(`input_row${row + 1}col${col + 1}`).disabled;
+					let cellData = `${row},${col},${this.$store.state.table[row][col] == '' ? null : this.$store.state.table[row][col]},${cellState}`
+					stringOfTableState += stringOfTableState.length ? ';' + cellData : cellData;
+				}
+			}
+			stringOfTableState += `/${this.$store.state.counter}/${this.$store.state.failCounter}`;
+			localStorage.setItem('tableState', stringOfTableState);
 		}
 	}
 }

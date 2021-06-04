@@ -11,14 +11,14 @@
 					<v-icon>mdi-refresh</v-icon>
 				</v-btn>
         <v-spacer />
-        <v-btn class="starter" v-if="isGameStateInStorage()" x-large elevation="12">
+        <v-btn class="starter" v-if="isTableStateInStorage()" x-large elevation="12" @click="initTableFromStorage()">
 					Folytatás
 					<v-spacer />
 					<v-icon>mdi-play</v-icon>
 				</v-btn>
       </v-container>
       <v-container v-if="$store.state.menuStatus == 1">
-        <v-btn class="starter" x-large flat color="#00e639" elevation="12" @click="setDifficulty(1)">
+        <v-btn class="starter" x-large color="#00e639" elevation="12" @click="setDifficulty(1)">
 					Könnyű
 					<v-spacer />
 					<v-icon>mdi-star</v-icon>
@@ -26,7 +26,7 @@
 					<v-icon>mdi-star-outline</v-icon>
 				</v-btn>
         <v-spacer />
-        <v-btn class="starter" x-large flat color="#ffff66" elevation="12" @click="setDifficulty(2)">
+        <v-btn class="starter" x-large color="#ffff66" elevation="12" @click="setDifficulty(2)">
 					Közepes
 					<v-spacer />
 					<v-icon>mdi-star</v-icon>
@@ -34,7 +34,7 @@
 					<v-icon>mdi-star-outline</v-icon>
 				</v-btn>
         <v-spacer />
-        <v-btn class="starter" x-large flat color="#ff5c33" elevation="12" @click="setDifficulty(3)">
+        <v-btn class="starter" x-large color="#ff5c33" elevation="12" @click="setDifficulty(3)">
 					Nehéz
 					<v-spacer />
 					<v-icon>mdi-star</v-icon>
@@ -43,7 +43,7 @@
 				</v-btn>
       </v-container>
 			<v-container v-if="$store.state.menuStatus == 2" class="my-10 py-10">
-				<v-progress-circular indeterminate color="primary" />
+				<v-progress-circular indeterminate color="rgb(51,102,187)" />
 			</v-container>
       <v-container v-if="$store.state.menuStatus == 3">
         <v-container class="float-left col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3"><GameInfo /></v-container>
@@ -79,6 +79,7 @@ div[data-app='true'] {
   vertical-align: middle;
   margin-top: auto;
   margin-bottom: auto;
+	border: 0.25px solid grey;
 }
 #title {
   text-transform: capitalize;
@@ -107,14 +108,14 @@ export default {
     setDifficulty(lvl) {
 			this.$store.state.menuStatus = 2;
       this.$store.state.difficulty = lvl;
-      this.initTable();
 			setTimeout(() => {
 				this.$store.state.menuStatus = 3;
+      	this.initTable();
 				this.timer = setInterval(() => this.countTime(), 1000);
-			}, 1000);
+			}, 1500);
     },
-    isGameStateInStorage() {
-      if(localStorage.getItem('table') != null && localStorage.getItem('table') != 'null') {
+    isTableStateInStorage() {
+      if(localStorage.getItem('tableState') != null && localStorage.getItem('tableState') != '') {
         return true;
       }
       return false;
@@ -153,6 +154,16 @@ export default {
 			}
 			this.removeNumbers(58 + this.$store.state.difficulty * 2);
     },
+		initCellStyles() {
+			for(let row = 0; row < 9; row ++) {
+				for(let col = 0; col < 9; col ++) {
+					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
+					if(this.$store.state.table[row][col] != '') {
+						cell.disabled = true;
+					}
+				}
+			}
+		},
     removeNumbers(number) {
 			let removedCounter = 0;
 			let row = 0;
@@ -175,6 +186,7 @@ export default {
 					rounds ++;
 				}
 			}
+			setTimeout(() => this.initCellStyles(), 1);
 		},
     countTime() {
 			if(this.$store.state.filledFields < 81 && this.$store.state.gamePaused == false) {
@@ -250,6 +262,40 @@ export default {
 				if(col >= 6) return 9;
 			}
 		},
+		initTableFromStorage() {
+			this.$store.state.menuStatus = 2;
+				setTimeout(() => {
+				this.$store.state.menuStatus = 3;
+      	this.loadTable();
+				this.timer = setInterval(() => this.countTime(), 1000);
+			}, 1500);
+		},
+		loadTable() {
+			this.$store.state.menuStatus = 3;
+			let stringOfTableState = localStorage.getItem('tableState');
+			let datas = stringOfTableState.split('/')
+			let cells = datas[0].split(';');
+			this.$store.state.counter = datas[1];
+			this.$store.state.failCounter = datas[2];
+			this.$store.state.filledFields = 0;
+			for(let i = 0; i < cells.length; i ++) {
+				let cellData = cells[i].split(',');
+				if(cellData[2] != null && cellData[2] != 'null') {
+					this.$store.state.filledFields ++;
+					this.$store.state.table[cellData[0]][cellData[1]] = cellData[2];
+				}
+			}
+			localStorage.setItem('tableState', '');
+			setTimeout(() => this.initLoadedCellStyles(cells), 1);
+		},
+		initLoadedCellStyles(cellArray) {
+			console.log(cellArray);
+			for(let i = 0; i < cellArray.length; i ++) {
+				let cellData = cellArray[i].split(',');
+				let cell = document.getElementById(`input_row${parseInt(cellData[0]) + 1}col${parseInt(cellData[1]) + 1}`);
+				cell.disabled = JSON.parse(cellData[3]);
+			}
+		}
   }
 }
 </script>
