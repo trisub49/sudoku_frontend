@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container id="app">
+    <v-container id="gameengine">
       <h1 id="title">Sudoku Project App</h1>
       <v-divider />
       <v-spacer />
@@ -39,7 +39,7 @@ div[data-app='true'] {
   height: 100px;
   font-weight: bold;
 }
-#app {
+#gameengine {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -61,7 +61,7 @@ import GameBoard from "./components/GameBoard.vue";
 import GameInfo from "./components/GameInfo.vue";
 
 export default {
-  name: "App",
+  name: "GameEngine",
 
   components: {
     GameBoard,
