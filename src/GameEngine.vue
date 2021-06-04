@@ -16,7 +16,10 @@
         <v-spacer />
         <v-btn class="starter" x-large color="#ff5c33" elevation="12" @click="setDifficulty(3)">Nehéz</v-btn>
       </v-container>
-      <v-container v-if="$store.state.menuStatus == 2">
+			<v-container v-if="$store.state.menuStatus == 2" class="my-10 py-10">
+				<v-progress-circular indeterminate color="primary" />
+			</v-container>
+      <v-container v-if="$store.state.menuStatus == 3">
         <v-container class="float-left col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3"><GameInfo /></v-container>
         <v-container class="float-right col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9"><GameBoard /></v-container>
       </v-container>
@@ -76,9 +79,13 @@ export default {
   
   methods: {
     setDifficulty(lvl) {
+			this.$store.state.menuStatus = 2;
       this.$store.state.difficulty = lvl;
-      this.$store.state.menuStatus = 2;
       this.initTable();
+			setTimeout(() => {
+				this.$store.state.menuStatus = 3;
+				this.timer = setInterval(() => this.countTime(), 1000);
+			}, 1000);
     },
     isGameStateInStorage() {
       if(localStorage.getItem('table') != null && localStorage.getItem('table') != 'null') {
@@ -88,9 +95,8 @@ export default {
     },
 
     initTable() {
-
-      for(let i = 0; i < 9; i ++) { this.resetRow(i); }
-      window.clearTimeout(this.timer);
+			for(let i = 0; i < 9; i ++) { this.resetRow(i); }
+			window.clearTimeout(this.timer);
 			let row = 0;
 			let col = 0;
 			this.$store.state.filledFields = 81;
@@ -100,7 +106,7 @@ export default {
 			while(row < 9) {
 				let rowFailCounter = 0;
 				while(col < 9 && rowFailCounter < 5) {
-					let possibleNumbers = this.getPossibleNumbers( row, col);
+					let possibleNumbers = this.getPossibleNumbers(row, col);
 					if(possibleNumbers.length == 0) {
 						this.resetRow(row);
 						col = 0;
@@ -120,22 +126,27 @@ export default {
 				row ++;
 			}
 			this.removeNumbers(58 + this.$store.state.difficulty * 2);
-			this.timer = setInterval(() => this.countTime(), 1000);
     },
     removeNumbers(number) {
 			let removedCounter = 0;
 			let row = 0;
+			let rounds = 0;
 			while(row < 9) {
 				for(let col = 0; col < 9; col ++) {
-					if(this.$store.state.table[row][col] != '' && removedCounter < number && Math.floor(10 * Math.random(2)) == 1) {
-						this.$store.state.table[row][col] = '';
-						removedCounter ++;
-						this.$store.state.filledFields --;
+					// az első körben 50% az esély, hogy a számot eltünteti, majd körönként 10%-ot emelkedik
+					if(this.$store.state.table[row][col] != '' && removedCounter < number) {
+						if(Math.floor(Math.random() * 10) + 1 + rounds >= 5) {
+							this.$store.state.table[row][col] = '';
+							removedCounter ++;
+							this.$store.state.filledFields --;
+							if(removedCounter == number) break;
+						}
 					}
 				}
 				row ++;
 				if(row == 9 && removedCounter < number) {
 					row = 0;
+					rounds ++;
 				}
 			}
 		},
