@@ -4,7 +4,7 @@
       <h1 id="title">Sudoku Project App</h1>
       <v-divider />
       <v-spacer />
-      <v-container v-if="$store.state.menuStatus == 0">
+      <v-container v-if="$store.state.menuStatus == 0" class="mx-0 px-0">
         <v-btn class="starter" x-large @click="$store.state.menuStatus = 1" elevation="12">
 					Új játék
 					<v-spacer />
@@ -17,7 +17,7 @@
 					<v-icon>mdi-play</v-icon>
 				</v-btn>
       </v-container>
-      <v-container v-if="$store.state.menuStatus == 1">
+      <v-container v-if="$store.state.menuStatus == 1" class="mx-0 px-0">
         <v-btn class="starter" x-large color="#00e639" elevation="12" @click="setDifficulty(1)">
 					Könnyű
 					<v-spacer />
@@ -42,10 +42,10 @@
 					<v-icon>mdi-star</v-icon>
 				</v-btn>
       </v-container>
-			<v-container v-if="$store.state.menuStatus == 2" class="my-10 py-10">
+			<v-container v-if="$store.state.menuStatus == 2" class="my-10 py-10 mx-0 px-0">
 				<v-progress-circular indeterminate color="rgb(51,102,187)" />
 			</v-container>
-      <v-container v-if="$store.state.menuStatus == 3">
+      <v-container v-if="$store.state.menuStatus == 3" class="mx-0 px-0">
         <v-container class="float-left col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3"><GameInfo /></v-container>
         <v-container class="float-right col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9"><GameBoard /></v-container>
       </v-container>

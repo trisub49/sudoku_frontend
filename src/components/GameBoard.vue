@@ -5,7 +5,7 @@
 			Ilyenkor a tábla nem látszik. <br>
 			Folytatáshoz kattints a Play ikonra!
 		</v-row>
-		<table v-show="$store.state.gamePaused == false" id="sudokutable" >
+		<table v-show="$store.state.gamePaused == false" id="sudokutable" class="mx-auto px-0">
 			<tr class="mainrow" v-for="rIndex in 9" :key="rIndex">
 				<td class="maincol" v-for="cIndex in 9" :key="cIndex" :id="'row' + rIndex + 'col' + cIndex">
 					<input 
@@ -27,10 +27,9 @@
 	margin-top: 0px;
 }
 table {
+	max-width: 100%;
 	width: 380px;
 	height: 380px;
-	margin-left: auto;
-	margin-right: auto;
 	border-collapse: collapse;
 	border: 2px solid black;
 	background-color: rgb(234, 234, 250);
