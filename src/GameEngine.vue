@@ -5,16 +5,42 @@
       <v-divider />
       <v-spacer />
       <v-container v-if="$store.state.menuStatus == 0">
-        <v-btn class="starter" x-large @click="$store.state.menuStatus = 1" elevation="12">Új játék</v-btn>
+        <v-btn class="starter" x-large @click="$store.state.menuStatus = 1" elevation="12">
+					Új játék
+					<v-spacer />
+					<v-icon>mdi-refresh</v-icon>
+				</v-btn>
         <v-spacer />
-        <v-btn class="starter" v-if="isGameStateInStorage()" x-large elevation="12">Folytatás</v-btn>
+        <v-btn class="starter" v-if="isGameStateInStorage()" x-large elevation="12">
+					Folytatás
+					<v-spacer />
+					<v-icon>mdi-play</v-icon>
+				</v-btn>
       </v-container>
       <v-container v-if="$store.state.menuStatus == 1">
-        <v-btn class="starter" x-large color="#00e639" elevation="12" @click="setDifficulty(1)">Könnyű</v-btn>
+        <v-btn class="starter" x-large flat color="#00e639" elevation="12" @click="setDifficulty(1)">
+					Könnyű
+					<v-spacer />
+					<v-icon>mdi-star</v-icon>
+					<v-icon>mdi-star-outline</v-icon>
+					<v-icon>mdi-star-outline</v-icon>
+				</v-btn>
         <v-spacer />
-        <v-btn class="starter" x-large color="#ffff66" elevation="12" @click="setDifficulty(2)">Közepes</v-btn>
+        <v-btn class="starter" x-large flat color="#ffff66" elevation="12" @click="setDifficulty(2)">
+					Közepes
+					<v-spacer />
+					<v-icon>mdi-star</v-icon>
+					<v-icon>mdi-star</v-icon>
+					<v-icon>mdi-star-outline</v-icon>
+				</v-btn>
         <v-spacer />
-        <v-btn class="starter" x-large color="#ff5c33" elevation="12" @click="setDifficulty(3)">Nehéz</v-btn>
+        <v-btn class="starter" x-large flat color="#ff5c33" elevation="12" @click="setDifficulty(3)">
+					Nehéz
+					<v-spacer />
+					<v-icon>mdi-star</v-icon>
+					<v-icon>mdi-star</v-icon>
+					<v-icon>mdi-star</v-icon>
+				</v-btn>
       </v-container>
 			<v-container v-if="$store.state.menuStatus == 2" class="my-10 py-10">
 				<v-progress-circular indeterminate color="primary" />
@@ -37,7 +63,7 @@ div[data-app='true'] {
 }
 .starter {
   margin: 20px;
-  width: 65%;
+	width: 100%;
   max-width: 400px;
   height: 100px;
   font-weight: bold;

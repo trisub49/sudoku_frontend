@@ -1,6 +1,11 @@
 <template>
 	<v-container class="gameboard">
-		<table id="sudokutable">
+		<v-row v-show="$store.state.gamePaused == true" id="pause" align="center" justify="center">
+			<h1>A játék szünetel. </h1><br>
+			Ilyenkor a tábla nem látszik. <br>
+			Folytatáshoz kattints a Play ikonra!
+		</v-row>
+		<table v-show="$store.state.gamePaused == false" id="sudokutable" >
 			<tr class="mainrow" v-for="rIndex in 9" :key="rIndex">
 				<td class="maincol" v-for="cIndex in 9" :key="cIndex" :id="'row' + rIndex + 'col' + cIndex">
 					<input 
@@ -38,7 +43,7 @@ table {
 .mainvalue {
 	border: none;
 	width: 20px;
-	font-size: xx-large;
+	font-size: x-large;
 	font-weight: bold;
 	color: black;
 	text-align: center
@@ -52,6 +57,18 @@ td[id$="col3"], td[id$="col6"] {
 .mainvalue :active, .mainvalue :focus {
 	border: none;
 	outline: none;
+}
+#pause {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: x-large;
+	font-weight: bold;
+	border: 2px solid black;
+	height: 380px;
+	width: 380px;
+	background-color: rgb(234, 234, 250);
 }
 </style>
 

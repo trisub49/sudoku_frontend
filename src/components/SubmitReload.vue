@@ -10,15 +10,26 @@
 			<v-card-text>
 				<b>
 					<v-spacer />
+					<v-divider />
+					<br>
 					Biztosan új táblát szeretnél?
 					<v-spacer />
 					A jelenlegi eredményed el fog veszni.
+					<v-spacer />
 				</b>
 			</v-card-text>
 			<v-card-actions>
-				<v-btn width="33%" @click="$store.state.menuStatus = 1">Igen</v-btn>
+				<v-btn large width="40%" color="primary" @click="$store.state.menuStatus = 1" elevation="20">
+					Igen
+					<v-spacer />
+					<v-icon>mdi-check</v-icon>
+				</v-btn>
 				<v-spacer />
-				<v-btn width="33%" @click="dialog = false">Nem</v-btn>
+				<v-btn large width="40%" @click="dialog = false" elevation="20">
+					Nem
+					<v-spacer />
+					<v-icon>mdi-close</v-icon>
+				</v-btn>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
@@ -26,7 +37,7 @@
 
 <style scoped>
 .v-btn {
-	text-transform: unset;
+	font-weight: bold;
 }
 </style>
 

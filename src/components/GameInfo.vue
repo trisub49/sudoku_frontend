@@ -8,7 +8,7 @@
 					<tr><td class="titles">Kitöltött mezők:</td><td class="values">{{filledFields}}/81</td></tr>
 				</table>
 			</v-container>
-			<v-container class="d-inline-block d-sm-inline-block d-md-none justify-center">
+			<v-container class="d-inline-block d-sm-inline-block d-md-none justify-center py-0 my-0">
 				<table>
 					<tr>
 						<td class="text-xs-center cellsize"><v-icon>mdi-alert-circle-outline</v-icon></td>
@@ -24,15 +24,18 @@
 			</v-container>
 		</v-container>
 		<br>
-		<v-row>
-			<v-col>
-				<v-btn v-if="$store.state.gamePaused == false" icon elevation="20" color="black" @click="pauseGame()"><v-icon>mdi-pause</v-icon></v-btn>
-				<v-btn v-if="$store.state.gamePaused == true" icon elevation="20" color="black" @click="pauseGame()"><v-icon>mdi-play</v-icon></v-btn>
-			</v-col>
-			<v-col>
-				<SubmitReload />
-			</v-col>
-		</v-row>
+		<v-container class="py-0 my-0">
+			<v-row>
+				<v-col>
+					<v-btn icon elevation="20" color="black" @click="pauseGame()">
+						<v-icon>{{$store.state.gamePaused ? 'mdi-play' : 'mdi-pause'}}</v-icon>
+					</v-btn>
+				</v-col>
+				<v-col>
+					<SubmitReload />
+				</v-col>
+			</v-row>
+		</v-container>
 	</v-container>
 </template>
 
@@ -104,10 +107,6 @@ export default {
 				table.style.visibility = "visible";
 				this.$store.state.gamePaused = false;
 			}
-		},
-
-		submitReload() {
-
 		}
 	}
 }
