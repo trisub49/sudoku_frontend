@@ -7,7 +7,7 @@
 						class="mainvalue" 
 						@click="clearCell(rIndex - 1, cIndex - 1)" 
 						@change="numberInspection(rIndex - 1, cIndex - 1)" 
-						v-model="table[rIndex - 1][cIndex - 1]" 
+						v-model="$store.state.table[rIndex - 1][cIndex - 1]" 
 						:id="'input_row' + rIndex + 'col' + cIndex"
 					/>
 				</td>
@@ -57,93 +57,13 @@ td[id$="col3"], td[id$="col6"] {
 
 <script>
 export default {
-	props: ['difficulty'],
-
-	data() {
-		return {
-			numberChecked: 0,
-			table: [
-				['', '', '', '', '', '', '', '', ''],
-				['', '', '', '', '', '', '', '', ''],
-				['', '', '', '', '', '', '', '', ''],
-				['', '', '', '', '', '', '', '', ''],
-				['', '', '', '', '', '', '', '', ''],
-				['', '', '', '', '', '', '', '', ''],
-				['', '', '', '', '', '', '', '', ''],
-				['', '', '', '', '', '', '', '', ''],
-				['', '', '', '', '', '', '', '', '']
-			]
-		}
-	},
-
-	created() {
-		this.initTable();
-	},
 
 	methods: {
-		initTable() {
-			let row = 0;
-			let col = 0;
-			var preLoad = performance.now();
-
-			this.$store.state.filledFields = 81;
-			this.$store.state.failCounter = 0;
-			this.$store.state.counter = 0;
-			this.$store.state.gamePaused = false;
-
-			while(row < 9) {
-				let rowFailCounter = 0;
-
-				while(col < 9 && rowFailCounter < 5) {
-					let possibleNumbers = this.getPossibleNumbers(row, col);
-
-					if(possibleNumbers.length == 0) {
-						this.resetRow(row);
-						col = 0;
-						rowFailCounter ++;
-						if(rowFailCounter == 5) {
-							row --;
-							// ha a sor létrehozása 5 alkalommal nem sikerül, az előző sort újratölti
-						}
-					} else {
-						let random = Math.floor(Math.random() * possibleNumbers.length);
-						let number = possibleNumbers[random];
-						this.table[row][col] = number;
-						col ++;
-					}
-				}
-				col = 0;
-				row ++;
-			}
-			this.removeNumbers(58 + this.difficulty * 2);
-			setTimeout(() => this.initCellStyles(), 1);
-			this.countTime();
-			console.log(`A véletlenszerű tábla betöltés ${(performance.now() - preLoad) / 100} másodpercet vett igénybe.`);
-		},
-		removeNumbers(number) {
-			let removedCounter = 0;
-			let row = 0;
-
-			while(row < 9) {
-				for(let col = 0; col < 9; col ++) {
-					if(this.table[row][col] != '' && removedCounter < number && Math.floor(10 * Math.random(2)) == 1) {
-						this.table[row][col] = '';
-						removedCounter ++;
-						this.$store.state.filledFields --;
-					}
-				}
-				row ++;
-				if(row == 9 && removedCounter < number) {
-					row = 0;
-				}
-			}
-		},
 		initCellStyles() {
 			for(let row = 0; row < 9; row ++) {
 				for(let col = 0; col < 9; col ++) {
 					let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
-
-					if(this.table[row][col] != '') {
+					if(this.$store.state.table[row][col] != '') {
 						cell.disabled = true;
 					}
 				}
@@ -154,12 +74,12 @@ export default {
 
 			for(let i = 0; i < 9; i ++) {
 				// sor ellenőrzés
-				if(possibleNumbers.indexOf(this.table[row][i]) !== -1 && i != col) {
-					possibleNumbers = possibleNumbers.filter(x => x !== this.table[row][i]);
+				if(possibleNumbers.indexOf(this.$store.state.table[row][i]) !== -1 && i != col) {
+					possibleNumbers = possibleNumbers.filter(x => x !== this.$store.state.table[row][i]);
 				}
 				// oszlop ellenőrzés
-				if(possibleNumbers.indexOf(this.table[i][col]) !== -1 && i != row) {
-					possibleNumbers = possibleNumbers.filter(x => x !== this.table[i][col]);
+				if(possibleNumbers.indexOf(this.$store.state.table[i][col]) !== -1 && i != row) {
+					possibleNumbers = possibleNumbers.filter(x => x !== this.$store.state.table[i][col]);
 				}
 			}
 			// blokk ellenőrzés
@@ -196,8 +116,8 @@ export default {
 
 			for(let row = rowStart; row < rowEnd; row ++) {
 				for(let col = colStart; col < colEnd; col ++) {
-					if(!removableNumbers.includes(this.table[row][col])) {
-						removableNumbers.push(this.table[row][col]);
+					if(!removableNumbers.includes(this.$store.state.table[row][col])) {
+						removableNumbers.push(this.$store.state.table[row][col]);
 					}
 				}
 			}
@@ -205,12 +125,12 @@ export default {
 		},
 		resetRow(row) {
 			for(let col = 0; col < 9; col ++) {
-				this.table[row][col] = '';
+				this.$store.state.table[row][col] = '';
 			}
 		},
 		// játék indítás utáni metódusok
 		numberInspection(row, col) {
-			let num = this.table[row][col];
+			let num = this.$store.state.table[row][col];
 
 			if(parseInt(num) > 0) {
 				if(parseInt(num) > 9) {
@@ -242,7 +162,7 @@ export default {
 		},
 		isRowFree(num, row, actualCol) {
 			for(let col = 0; col < 9; col ++) {
-				if(this.table[row][col] == num && col != actualCol) {
+				if(this.$store.state.table[row][col] == num && col != actualCol) {
 					return false;
 				}
 			}
@@ -250,7 +170,7 @@ export default {
 		},
 		isColFree(num, actualRow, actualCol) {
 			for(let row = 0; row < 9; row ++) {
-				if(this.table[row][actualCol] == num && row != actualRow) {
+				if(this.$store.state.table[row][actualCol] == num && row != actualRow) {
 					return false;
 				}
 			}
@@ -299,7 +219,7 @@ export default {
 			}
 			for(let row = rowStart; row < rowEnd; row ++) {
 				for(let col = colStart; col < colEnd; col ++) {
-					if(this.table[row][col] == number && row != actualRow && col != actualCol) {
+					if(this.$store.state.table[row][col] == number && row != actualRow && col != actualCol) {
 						return true;
 					}
 				}
@@ -309,19 +229,14 @@ export default {
 		clearCell(row, col) {
 			let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
 
-			if(this.table[row][col] != '') {
+			if(this.$store.state.table[row][col] != '') {
 				this.$store.state.filledFields --;
 			}
-			this.table[row][col] = '';
+			this.$store.state.table[row][col] = '';
 			cell.value = '';
 			cell.style.color = 'black';
 		},
-    countTime() {
-			setTimeout(this.countTime, 1000);
-			if(this.$store.state.filledFields < 81 && this.$store.state.gamePaused == false) {
-				this.$store.state.counter ++;
-			}
-    },
+    
 		finishGame() {
 			console.log('a tábla ki lett tölve');
 		}

@@ -23,9 +23,16 @@
 				</table>
 			</v-container>
 		</v-container>
-    <v-btn v-if="$store.state.gamePaused == false" icon elevation="20" color="black" @click="pauseGame()"><v-icon>mdi-pause</v-icon></v-btn>
-		<v-btn v-if="$store.state.gamePaused == true" icon elevation="20" color="black" @click="pauseGame()"><v-icon>mdi-play</v-icon></v-btn>
-		<v-btn icon elevation="20" color="black"><v-icon>mdi-refresh</v-icon></v-btn>
+		<br>
+		<v-row>
+			<v-col>
+				<v-btn v-if="$store.state.gamePaused == false" icon elevation="20" color="black" @click="pauseGame()"><v-icon>mdi-pause</v-icon></v-btn>
+				<v-btn v-if="$store.state.gamePaused == true" icon elevation="20" color="black" @click="pauseGame()"><v-icon>mdi-play</v-icon></v-btn>
+			</v-col>
+			<v-col>
+				<SubmitReload />
+			</v-col>
+		</v-row>
 	</v-container>
 </template>
 
@@ -56,8 +63,17 @@ table {
 </style>
 
 <script>
+import SubmitReload from "@/components/SubmitReload.vue";
+
 export default {
 
+	components: { SubmitReload },
+
+	data() {
+		return {
+			reload: false
+		}
+	},
 	computed: {
 		countString() {
 			let seconds = this.$store.state.counter;
@@ -88,6 +104,10 @@ export default {
 				table.style.visibility = "visible";
 				this.$store.state.gamePaused = false;
 			}
+		},
+
+		submitReload() {
+
 		}
 	}
 }
