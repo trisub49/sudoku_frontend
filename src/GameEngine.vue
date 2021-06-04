@@ -45,7 +45,7 @@
 			<v-container v-if="$store.state.menuStatus == 2" class="my-10 py-10 mx-0 px-0">
 				<v-progress-circular indeterminate color="rgb(51,102,187)" />
 			</v-container>
-      <v-container v-if="$store.state.menuStatus == 3" class="mx-0 px-0">
+      <v-container v-if="$store.state.menuStatus == 3" class="px-0">
         <v-container class="float-left col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3"><GameInfo /></v-container>
         <v-container class="float-right col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9"><GameBoard /></v-container>
       </v-container>
@@ -63,8 +63,8 @@ div[data-app='true'] {
 }
 .starter {
   margin: 20px;
-	width: 100%;
-  max-width: 400px;
+	width: 380px;
+  max-width: 100%;
   height: 100px;
   font-weight: bold;
 }

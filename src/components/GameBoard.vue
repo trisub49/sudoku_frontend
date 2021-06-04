@@ -1,5 +1,5 @@
 <template>
-	<v-container class="gameboard">
+	<v-container class="gameboard mx-0 px-0">
 		<v-row v-show="$store.state.gamePaused == true" id="pause" align="center" justify="center">
 			<h1>A játék szünetel. </h1><br>
 			Ilyenkor a tábla nem látszik. <br>
@@ -27,8 +27,8 @@
 	margin-top: 0px;
 }
 table {
-	max-width: 100%;
-	width: 380px;
+	width: 100%;
+	max-width: 380px;
 	height: 380px;
 	border-collapse: collapse;
 	border: 2px solid black;
