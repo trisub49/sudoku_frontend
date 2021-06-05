@@ -168,7 +168,7 @@ export default {
 			let removedCounter = 0;
 			let row = 0;
 			let rounds = 0;
-			while(row < 9) {
+			for(row; row < 9; row ++) {
 				for(let col = 0; col < 9; col ++) {
 					// az első körben 50% az esély, hogy a számot eltünteti, majd körönként 10%-ot emelkedik
 					if(this.$store.state.table[row][col] != '' && removedCounter < number) {
@@ -180,8 +180,7 @@ export default {
 						}
 					}
 				}
-				row ++;
-				if(row == 9 && removedCounter < number) {
+				if(row == 8 && removedCounter < number) {
 					row = 0;
 					rounds ++;
 				}
