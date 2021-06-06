@@ -6,6 +6,6 @@ passport.use(new GoogleStrategy({
 	clientID: keys.google.clientID,
 	clientSecret: keys.google.clientSecret,
 	callbackURL: '/index.html'
-}, () => {
+}, (accessToken, refreshToken, profile, done) => {
 	console.log('nyald meg');
 }));
