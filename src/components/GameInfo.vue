@@ -70,7 +70,9 @@ import SubmitReload from "@/components/SubmitReload.vue";
 
 export default {
 
-	components: { SubmitReload },
+	components: { 
+		SubmitReload
+	},
 
 	data() {
 		return {

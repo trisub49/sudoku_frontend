@@ -5,17 +5,22 @@
       <v-divider />
       <v-spacer />
       <v-container v-if="$store.state.menuStatus == 0" class="mx-0 px-0">
-        <v-btn class="starter" x-large @click="$store.state.menuStatus = 1" elevation="12">
-					Új játék
+				<v-container class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 float-left">
+					<v-btn class="starter mx-0" x-large @click="$store.state.menuStatus = 1" elevation="12">
+						Új játék
+						<v-spacer />
+						<v-icon>mdi-refresh</v-icon>
+					</v-btn>
 					<v-spacer />
-					<v-icon>mdi-refresh</v-icon>
-				</v-btn>
-        <v-spacer />
-        <v-btn class="starter" v-if="isTableStateInStorage()" x-large elevation="12" @click="initTableFromStorage()">
-					Folytatás
-					<v-spacer />
-					<v-icon>mdi-play</v-icon>
-				</v-btn>
+					<v-btn class="starter mx-0" v-if="isTableStateInStorage()" x-large elevation="12" @click="initTableFromStorage()">
+						Folytatás
+						<v-spacer />
+						<v-icon>mdi-play</v-icon>
+					</v-btn>
+				</v-container>
+				<v-container class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 float-left">
+					<User />
+				</v-container>
       </v-container>
       <v-container v-if="$store.state.menuStatus == 1" class="mx-0 px-0">
         <v-btn class="starter" x-large color="#00e639" elevation="12" @click="setDifficulty(1)">
@@ -89,13 +94,15 @@ div[data-app='true'] {
 <script>
 import GameBoard from "./components/GameBoard.vue";
 import GameInfo from "./components/GameInfo.vue";
+import User from "./components/User.vue";
 
 export default {
   name: "GameEngine",
 
   components: {
     GameBoard,
-    GameInfo
+    GameInfo,
+		User
   },
 
   data() {
@@ -152,7 +159,7 @@ export default {
 				col = 0;
 				row ++;
 			}
-			this.removeNumbers(58 + this.$store.state.difficulty * 2);
+			setTimeout(this.removeNumbers(58 + this.$store.state.difficulty * 2), 100);
     },
 		initCellStyles() {
 			for(let row = 0; row < 9; row ++) {
@@ -172,7 +179,8 @@ export default {
 				for(let col = 0; col < 9; col ++) {
 					// az első körben 50% az esély, hogy a számot eltünteti, majd körönként 10%-ot emelkedik
 					if(this.$store.state.table[row][col] != '' && removedCounter < number) {
-						if(Math.floor(Math.random() * 10) + 1 + rounds >= 5) {
+						let random = Math.floor(Math.random() * 10) + 1 + rounds;
+						if(random >= 5) {
 							this.$store.state.table[row][col] = '';
 							removedCounter ++;
 							this.$store.state.filledFields --;
