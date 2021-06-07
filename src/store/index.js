@@ -22,6 +22,7 @@ export default new Vuex.Store({
     failCounter: 0,
     filledFields: 81,
     gamePaused: false,
+    user: null
   },
   mutations: {
     

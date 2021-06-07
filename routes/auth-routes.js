@@ -7,8 +7,9 @@ router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
     res.redirect('/');
 });
 
-router.get('/logout', (req, res) => {
+router.get('/google/logout', (req, res) => {
     req.logout();
+    res.send('logging out');
 });
 
 module.exports = router;
