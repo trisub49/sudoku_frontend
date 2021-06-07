@@ -3,7 +3,7 @@
 		<v-container v-if="loading" class="mx-auto py-10 my-5">
 			<v-progress-circular indeterminate color="rgb(51,102,187)" />
 		</v-container>
-		<v-container v-else>
+		<v-container v-else class="mx-auto py-0 my-0">
 			<v-container v-if="!isLoggedIn()">
 				<v-icon size="80">mdi-account-circle</v-icon>
 				<br>
@@ -15,10 +15,10 @@
 				</v-btn>
 			</v-container>
 			<v-container v-else>
-				<v-img :src="$store.state.user.image" width="30%" class="rounded-circle mx-auto" />
+				<v-img :src="$store.state.user.image" width="25%" class="rounded-circle mx-auto" />
 				<h3>{{$store.state.user.username}}</h3>
 				<br>
-				<v-row no-gutters>
+				<v-row no-gutters class="mb-0 pb-0">
 					<v-col class="mx-0 px-0"> <Statistic /> </v-col>
 					<v-col class="mx-0 px-0">
 						<v-btn @click="logout()" class="login py-0 my-0" width="80%" elevation="20" color="primary" small>
@@ -71,7 +71,7 @@ export default {
 	},
 	methods: {
 		getUser() {
-			axios.get('http://localhost:8080/api/user')
+			axios.get(`https://${window.location.hostname}/api/user`)
 			.then(res => {
 				if(res.data) {
 					this.$store.state.user = res.data;
@@ -84,7 +84,7 @@ export default {
 		logout() {
 			this.loading = true;
 			this.$store.state.user = null;
-			axios.get('http://localhost:8080/auth/google/logout')
+			axios.get(`https://${window.location.hostname}/auth/google/logout`)
 			.then(res => {
 				console.log(res.data);
 				setTimeout(() => this.loading = false, 1000);

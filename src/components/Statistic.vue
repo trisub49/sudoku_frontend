@@ -15,7 +15,7 @@
 				</b>
 			</v-card-text>
 			<v-card-actions class="justify-center">
-				<v-btn small width="45%" elevation="20" @click="dialog = false">
+				<v-btn class="backbtn" small width="45%" elevation="20" @click="dialog = false">
 					Vissza
 				</v-btn>
 			</v-card-actions>
@@ -29,4 +29,18 @@
   font-weight: bold;
   text-transform: unset;
 }
+.backbtn {
+	font-weight: bold;
+	text-transform: unset;
+}
 </style>
+
+<script>
+export default {
+	data() {
+		return {
+			dialog: false
+		}
+	}
+}
+</script>
