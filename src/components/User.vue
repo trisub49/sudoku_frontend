@@ -71,7 +71,7 @@ export default {
 	},
 	methods: {
 		getUser() {
-			axios.get(`http://sudokux.herokuapp.com/api/user`)
+			axios.get(`https://sudokux.herokuapp.com/api/user`)
 			.then(res => {
 				if(res.data) {
 					this.$store.state.user = res.data;
@@ -84,7 +84,7 @@ export default {
 		logout() {
 			this.loading = true;
 			this.$store.state.user = null;
-			axios.get(`http://sudokux.herokuapp.com/auth/google/logout`)
+			axios.get(`https://sudokux.herokuapp.com/auth/google/logout`)
 			.then(res => {
 				console.log(res.data);
 				setTimeout(() => this.loading = false, 1000);
