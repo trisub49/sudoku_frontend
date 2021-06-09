@@ -19,7 +19,7 @@
 				</b>
 			</v-card-text>
 			<v-card-actions>
-				<v-btn large width="40%" color="rgb(51,102,187)" @click="$store.state.menuStatus = 1" elevation="20">
+				<v-btn large width="40%" color="rgb(51,102,187)" @click="finishGame()" elevation="20">
 					Igen
 					<v-spacer />
 					<v-icon>mdi-check</v-icon>
@@ -42,10 +42,28 @@
 </style>
 
 <script>
+import axios from 'axios';
+
 export default {
 	data() {
 		return {
 			dialog: false
+		}
+	},
+	methods: {
+		finishGame() {
+			let host = window.location.protocol + "//" + window.location.host;
+			axios.post(`${host}/api/statistic`, {
+				playerId: this.$store.state.user._id,
+				level: this.$store.state.difficulty,
+				time: this.$store.state.counter,
+				failCounter: this.$store.state.failCounter,
+				isFinished: false
+			})
+			.then(res => {
+				console.log(res);
+				this.$store.state.menuStatus = 1;
+			});
 		}
 	}
 }

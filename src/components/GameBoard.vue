@@ -72,6 +72,8 @@ td[id$="col3"], td[id$="col6"] {
 </style>
 
 <script>
+import axios from 'axios';
+
 export default {
 
 	methods: {
@@ -241,9 +243,19 @@ export default {
 			cell.value = '';
 			cell.style.color = 'black';
 		},
-    
-		finishGame() {
-			console.log('a tábla ki lett tölve');
+    finishGame() {
+			let host = window.location.protocol + "//" + window.location.host;
+			axios.post(`${host}/api/statistic`, {
+				playerId: this.$store.state.user._id,
+				level: this.$store.state.difficulty,
+				time: this.$store.state.counter,
+				failCounter: this.$store.state.failCounter,
+				isFinished: true
+			})
+			.then(res => {
+				console.log(res);
+				this.$store.state.menuStatus = 0;
+			});
 		}
 	}
 }

@@ -21,6 +21,7 @@ mongoose.connect(keys.database.URL, {
 app.use(cookieSession({ maxAge: 12 * 3600000, keys: [keys.cookieSession.key] }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
