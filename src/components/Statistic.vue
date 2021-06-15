@@ -9,7 +9,23 @@
 			<v-card-title>
 				<h4>Statisztika</h4>
 			</v-card-title>
-			<v-card-text v-html="dialogText">
+			<v-card-text>
+				<v-container v-if="dialogStatus == 0"> 
+					<v-progress-circular indeterminate color="rgb(51,102,187)" />
+				</v-container>
+				<v-container v-if="dialogStatus == 1">
+					Neked nincsen még mentett statisztikád.
+				</v-container>
+				<v-container v-if="dialogStatus == 2" class="font-weight-bold">
+					<h3>Játszott játékok száma: {{statistic.playedGames}}</h3><br>
+					- könnyű: {{statistic.playedEasy}}<br>
+					- közepes: {{statistic.playedMedium}}<br>
+					- nehéz: {{statistic.playedHard}}<br><br>
+					<h3>Ebből befejezett: {{statistic.finishedGames}}</h3><br>
+					- könnyű: {{statistic.finishedEasy}}<br>
+					- közepes: {{statistic.finishedMedium}}<br>
+					- nehéz: {{statistic.finishedHard}}<br>
+				</v-container>
 			</v-card-text>
 			<v-card-actions class="justify-center">
 				<v-btn class="backbtn" small width="45%" elevation="20" @click="dialog = false">
@@ -39,7 +55,8 @@ export default {
 	data() {
 		return {
 			dialog: false,
-			dialogText: ""
+			dialogStatus: 0,
+			statistic: null
 		}
 	},
 	methods: {
@@ -47,18 +64,11 @@ export default {
 			let host = window.location.protocol + "//" + window.location.host;
 			axios.get(`${host}/api/statistic/${this.$store.state.user._id}`)
 			.then(res => {
-				if(res.data.playedGames == null) {
-					this.dialogText = 'Nincs még mentett statisztikád!'
+				this.statistic = res.data;
+				if(this.statistic.playedGames == null) {
+					this.dialogStatus = 1;
 				} else {
-					this.dialogText = 
-						`Játszott játékok száma: ${res.data.playedGames}<br>
-						- könnyű: ${res.data.playedEasy}<br>
-						- közepes: ${res.data.playedMedium}<br>
-						- nehéz: ${res.data.playedHard}<br>
-						Ebből befejezett: ${res.data.finishedGames}<br>
-						- könnyű: ${res.data.finishedEasy}<br>
-						- közepes: ${res.data.finishedMedium}<br>
-						- nehéz: ${res.data.finishedHard}<br>`;
+					this.dialogStatus = 2;
 				}
 			});
 		}
