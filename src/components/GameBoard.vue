@@ -75,12 +75,9 @@ td[id$="col3"], td[id$="col6"] {
 import axios from 'axios';
 
 export default {
-
 	methods: {
-		
 		getPossibleNumbers(row, col) {
 			let possibleNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 			for(let i = 0; i < 9; i ++) {
 				// sor ellenőrzés
 				if(possibleNumbers.indexOf(this.$store.state.table[row][i]) !== -1 && i != col) {
@@ -93,7 +90,6 @@ export default {
 			}
 			// blokk ellenőrzés
 			let fromBlock = this.getNumbersFromBlock(row, col);
-
 			fromBlock.forEach(number => {
 				if(possibleNumbers.indexOf(number) !== -1) {
 					possibleNumbers = possibleNumbers.filter(x => x !== number);
@@ -108,7 +104,6 @@ export default {
 			let rowEnd = 0;
 			let colEnd = 0;
 			let removableNumbers = [];
-
 			switch(blockNumber) {
 				case 1: { rowEnd = 3; colEnd = 3; break; }
 				case 2: { rowEnd = 3; colStart = 3; colEnd = 6; break; }
@@ -122,7 +117,6 @@ export default {
 				case 8: { rowStart = 6; rowEnd = 9; colStart = 3; colEnd = 6; break; }
 				case 9: { rowStart = 6; rowEnd = 9; colStart = 6; colEnd = 9; break; }
 			}
-
 			for(let row = rowStart; row < rowEnd; row ++) {
 				for(let col = colStart; col < colEnd; col ++) {
 					if(!removableNumbers.includes(this.$store.state.table[row][col])) {
@@ -140,7 +134,6 @@ export default {
 		// játék indítás utáni metódusok
 		numberInspection(row, col) {
 			let num = this.$store.state.table[row][col];
-
 			if(parseInt(num) > 0) {
 				if(parseInt(num) > 9) {
 					this.clearCell(row, col);
@@ -210,7 +203,6 @@ export default {
 			let colStart = 0;
 			let rowEnd = 0;
 			let colEnd = 0;
-
 			switch(blockNumber) {
 				case 1: { rowEnd = 3; colEnd = 3; break; }
 				case 2: { rowEnd = 3; colStart = 3; colEnd = 6; break; }
@@ -235,7 +227,6 @@ export default {
 		},
 		clearCell(row, col) {
 			let cell = document.getElementById(`input_row${row + 1}col${col + 1}`);
-
 			if(this.$store.state.table[row][col] != '') {
 				this.$store.state.filledFields --;
 			}

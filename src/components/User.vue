@@ -57,15 +57,12 @@ import Statistic from '@/components/Statistic.vue';
 
 export default {
 	name: 'User',
-
 	components: { Statistic },
-
 	data() {
 		return {
 			loading: true
 		}
 	},
-
 	created() {
 		this.getUser();
 	},

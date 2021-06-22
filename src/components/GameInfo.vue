@@ -69,11 +69,9 @@ table {
 import SubmitReload from "@/components/SubmitReload.vue";
 
 export default {
-
 	components: { 
 		SubmitReload
 	},
-
 	data() {
 		return {
 			reload: false
@@ -97,7 +95,6 @@ export default {
 			return this.$store.state.filledFields;
 		}
 	},
-
 	methods: {
 		pauseGame() {
 			if(this.$store.state.gamePaused == false) {
