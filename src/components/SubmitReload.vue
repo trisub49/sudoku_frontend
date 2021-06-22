@@ -52,6 +52,10 @@ export default {
 	},
 	methods: {
 		finishGame() {
+			if(this.$store.state.user == null || this.$store.state.user == 'null') {
+				return this.$store.state.menuStatus = 1;
+			}
+
 			let host = window.location.protocol + "//" + window.location.host;
 			axios.post(`${host}/api/statistic`, {
 				playerId: this.$store.state.user._id,
@@ -60,10 +64,7 @@ export default {
 				failCounter: this.$store.state.failCounter,
 				isFinished: false
 			})
-			.then(res => {
-				console.log(res);
-				this.$store.state.menuStatus = 1;
-			});
+			.then(this.$store.state.menuStatus = 1);
 		}
 	}
 }
